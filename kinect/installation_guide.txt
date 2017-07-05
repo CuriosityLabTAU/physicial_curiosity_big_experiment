@@ -1,0 +1,29 @@
+Steps to make the kinect part work:
+
+A. Make the kienct sensor ready
+1. Have a catkin_ws folder ready (from ROS installation)
+2. In catkin_ws/src: git clone https://github.com/CuriosityLabTAU/my_skeleton_markers
+3. catkin_ws>>catkin_make
+4. Test:    >>roslaunch my_skeleton_markers markers.launch & python skeleton_markers_reader.py
+5.          >>rostopic echo skeleton
+
+
+
+
+Run guide:
+
+0. change howie's internet connection to the wireless router and also connect the computer
+
+REMEMBER:
+open PyCharm from the terminal with the command:
+
+1. in terminal run:
+    >>roscore
+    >>roslaunch my_skeleton_markers markers.launch
+    >>rostopic echo skeleton
+1. run python skeleton_markers_reader.py
+2. run main.py
+
+
+
+http://doc.aldebaran.com/1-14/ref/python-api.html
