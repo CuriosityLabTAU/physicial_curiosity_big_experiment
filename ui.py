@@ -1,5 +1,3 @@
-
-
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -12,6 +10,7 @@ from kivy.clock import Clock
 from kivy.core.text import LabelBase
 import time
 
+import subprocess
 
 
 #import text fonts
@@ -23,8 +22,12 @@ import time
 # declaration of forms
 # connection to .kv file
 class Config(BoxLayout):
-    nao_ip = ObjectProperty()
-    subject_id= ObjectProperty()
+    pass
+    # nao_ip = ObjectProperty()
+    # subject_id= ObjectProperty()
+
+class Experiment_screen(BoxLayout):
+    pass
 
 
 # the app definition
@@ -32,6 +35,7 @@ class ExperimentApp(App):
     def build(self):
         # connect internal instances of form classes
         self.config = Config()
+        self.experiment_screen = Experiment_screen()
 
         # defines the screen manager, moves between forms
         self.sm = ScreenManager()
@@ -42,8 +46,37 @@ class ExperimentApp(App):
         Window.clearcolor = (1, 1, 1, 1)
         self.sm.add_widget(screen)
 
+        screen = Screen(name='experiment_screen')
+        screen.add_widget(self.experiment_screen)
+        Window.clearcolor = (1, 1, 1, 1)
+        self.sm.add_widget(screen)
+
         return self.sm
 
+
+    def goto_experiment_screen(self,subject_id,nao_ip):#go to experiment screen
+        print subject_id
+        print nao_ip
+        # subprocess.call(['python /main_nao.py '+subject_id+" "+nao_ip])
+        self.sm.current="experiment_screen"
+
+
+
+
+
+
+
+    def btn_released(self,btn,func,param1=None,param2=None):#button configuration
+        btn.background_coler=(1,1,1,1)
+        if param1 is not None:
+            func_param1=param1.text
+            if param2 is not None:
+                func_param2 = param2.text
+                func(func_param1,func_param2)
+            else:
+                func(func_param1)
+        else:
+            func()
 
 if __name__ == '__main__':
     ExperimentApp().run()

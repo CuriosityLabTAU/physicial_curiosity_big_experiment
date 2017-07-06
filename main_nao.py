@@ -2,6 +2,8 @@ import os
 import threading
 from naoqi import ALProxy
 import time
+import sys
+
 
 def intro(subject_id):
     start_working(subject_id)
@@ -65,4 +67,4 @@ def start_working(subject_id):
     t4 = threading.Thread(target=worker4)
     t4.start()
 
-intro("52")
+intro(int(sys.argv[1]))

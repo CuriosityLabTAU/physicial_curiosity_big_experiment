@@ -1,0 +1,126 @@
+<Config>:
+# Nao ip configuration and subject id
+    #nao_ip:nao_ip
+    #subject_id:subject_id
+    orientation:'vertical'
+    BoxLayout:
+        size_hint_y:0.1
+        padding:'5dp'
+        spacing:'5dp'
+        Label:
+            text:'SetUp screen'
+            font_size:30
+
+            color:0,0,0,1
+    BoxLayout:
+        size_hint_y:0.1
+
+        Label:
+            padding_x: self.width/3
+            padding_y: ( self.height - self.line_height ) / 2
+            text:"Nao ip"
+            font_size:20
+            color:0,0,0,1
+
+        TextInput:
+            id:nao_ip
+            padding_x: self.width/3
+            padding_y: ( self.height - self.line_height ) / 2
+            text:"192.168.0.100"
+            font_size:20
+            color:0,0,0,1
+
+    BoxLayout:
+        size_hint_y:0.1
+
+        Label:
+            padding_x: self.width/3
+            padding_y: ( self.height - self.line_height ) / 2
+            text:"Subject ID"
+            font_size:20
+            color:0,0,0,1
+
+        TextInput:
+            id:subject_id
+            padding_x: self.width/3
+            padding_y: ( self.height - self.line_height ) / 2
+            text:"subject_id"
+            font_size:20
+            color:0,0,0,1
+    BoxLayout:
+        size_hint_y:0.3
+        Button:
+            text:"Let's GO"
+            color:0,0,0,1
+            font_size:30
+            bold: True
+            on_press: self.background_color = (1,0,0,1)
+            on_release: app.btn_released(self, app.goto_experiment_screen,subject_id,nao_ip)  # function to be called when button is pressed
+
+
+<Experiment_screen>:
+
+    orientation:'vertical'
+    BoxLayout:
+        size_hint_y:0.3
+        Button:
+            size_hint_x:0.2
+            text:"Stop \n Experiment"
+            color:0,0,0,1
+            background_color:1,0,0,1
+            font_size:15
+            bold: True
+            on_press: self.background_color = (1,0,0,1)
+            on_release: app.btn_released(self, app.stop_experiment)  # function to be called when button is pressed
+
+        Label:
+            padding_x: self.width/3
+            padding_y: ( self.height - self.line_height ) / 2
+            text:"Experiment Screen"
+            bold: True
+            font_size:30
+            color:0,0,0,1
+
+
+
+    BoxLayout:
+        size_hint_y:0.3
+        Label:
+            text:"Experimental stage"
+            font_size:20
+            color:0,0,0,1
+            bold: True
+
+        Label:
+            text:"5"
+            font_size:20
+            color:0,0,0,1
+            bold: True
+
+    BoxLayout:
+        size_hint_y:0.3
+        Button:
+            text:"Next"
+            color:0,0,0,1
+            font_size:30
+            bold: True
+            on_press: self.background_color = (1,0,0,1)
+            on_release: app.btn_released(self, app.goto_main)  # function to be called when button is pressed
+
+    BoxLayout:
+        size_hint_y:0.1
+
+        Button:
+            text:"pause/resume"
+            color:0,0,0,1
+            font_size:30
+            bold: True
+            on_press: self.background_color = (1,0,0,1)
+            on_release: app.btn_released(self, app.goto_main)  # function to be called when button is pressed
+
+        Label:
+            padding_x: self.width/3
+            padding_y: ( self.height - self.line_height ) / 2
+            text:"Timer"
+            font_size:20
+            color:0,0,0,1
