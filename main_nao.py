@@ -49,6 +49,10 @@ def start_working(subject_id, nao_ip):
     def worker9():
         os.system('rosrun topic_tools throttle messages to_nao 5.0')
 
+    t8 = threading.Thread(target=worker8)
+    t8.start()
+    threading._sleep(0.5)
+
     t1 = threading.Thread(target=worker1)
     t1.start()
     threading._sleep(0.2)
@@ -71,10 +75,6 @@ def start_working(subject_id, nao_ip):
     # t7.start()
     # threading._sleep(0.2)
 
-
-    t8 = threading.Thread(target=worker8)
-    t8.start()
-    threading._sleep(0.2)
     t4 = threading.Thread(target=worker4)
     t4.start()
     threading._sleep(0.2)
