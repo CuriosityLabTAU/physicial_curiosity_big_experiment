@@ -10,6 +10,19 @@ class AngleMatrix:
         self.pNames = ['LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll',
                        'RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll']
 
+        self.set_base_matrices()
+        
+        self.matrix = random.choice(self.base_matrices['basic'] )
+        print(self.matrix, type(self.matrix))
+        self.skeleton_angles = np.zeros([8])
+        self.robot_angles = np.zeros([8])
+
+        self.pub = rospy.Publisher ('to_nao', String, queue_size=10)
+        self.log = rospy.Publisher ('experiment_log', String, queue_size=10)
+
+        self.exp_running = False
+
+    def set_base_matrices(self):
         self.base_matrices = {}
         self.base_matrices['basic'] = np.eye(8)
 
@@ -25,16 +38,10 @@ class AngleMatrix:
 
         self.base_matrices['LShoulderPitch-RShoulderRoll'] = self.switch_angles('LShoulderPitch', 'RShoulderRoll')
         self.base_matrices['LShoulderRoll-RShoulderPitch'] = self.switch_angles('LShoulderRoll', 'RShoulderPitch')
-        
-        self.matrix = random.choice(self.base_matrices['basic'] )
-        print(self.matrix, type(self.matrix))
-        self.skeleton_angles = np.zeros([8])
-        self.robot_angles = np.zeros([8])
 
-        self.pub = rospy.Publisher ('nao_commands', String, queue_size=10)
-        self.log = rospy.Publisher ('experiment_log', String, queue_size=10)
 
-        self.exp_running = False
+        for m in range(0, 8):
+            self.base_matrices[str(m)] = self.base_matrices['basic']
 
     def start(self):
         #init a listener to kinect angles
@@ -49,10 +56,9 @@ class AngleMatrix:
             self.exp_running = False
         elif 'start' in data.data:
             self.exp_running = True
-        elif 'the end' not in data.data:
+        elif 'the end' not in data.data: # got a real matrix
             self.matrix = self.base_matrices[data.data]
             self.log.publish(str(self.matrix))
-
 
     def callback(self, data):
         if self.exp_running:
@@ -90,7 +96,7 @@ class AngleMatrix:
         self.robot_angles[7] = np.minimum(self.robot_angles[7],1.5440)
 
     def transmit_robot_angles(self):
-        robot_str = ''
+        robot_str = '{\"action\": \"change_pose\", \"parameters\": \"\\\"'
         for name in self.pNames:
             robot_str += name + ','
         robot_str = robot_str[:-1] + ';'
@@ -99,8 +105,11 @@ class AngleMatrix:
             robot_str += str(ang) + ','
         robot_str = robot_str[:-1] + ';'
         robot_str += '0.4'
+        robot_str += '\\\"\"}'
+
+        print('*************** angle_matrix ************ published: ', robot_str)
+
         self.pub.publish(robot_str)
-        # print('*************** angle_matrix ************ published: ', robot_str)
 
     def switch_angles(self, angle_name_0, angle_name_1):
         matrix = np.eye(8)

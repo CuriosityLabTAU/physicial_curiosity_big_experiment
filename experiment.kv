@@ -59,7 +59,7 @@
 
 
 <Experiment_screen>:
-
+    kinect_status_id: kinect_status_id
     orientation:'vertical'
     BoxLayout:
         size_hint_y:0.3
@@ -70,7 +70,7 @@
             background_color:1,0,0,1
             font_size:15
             bold: True
-            on_press: self.background_color = (1,0,0,1)
+            on_press: self.background_color = (0.5,0.5,0,1)
             on_release: app.btn_released(self, app.stop_experiment)  # function to be called when button is pressed
 
         Label:
@@ -98,13 +98,36 @@
             bold: True
 
     BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y:0.1
+        Label:
+            text: 'Status:'
+            font_size:20
+            color:0,0,0,1
+            bold: True
+
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: 'Kinect'
+                font_size:20
+                color:0,0,0,1
+                bold: True
+            Label:
+                id: kinect_status_id
+                text: 'unknown'
+                font_size:20
+                color:0,0,0,1
+                bold: True
+
+    BoxLayout:
         size_hint_y:0.3
         Button:
             text:"Next"
             color:0,0,0,1
             font_size:30
             bold: True
-            on_press: self.background_color = (1,0,0,1)
+            on_press: app.next_epoch()
             on_release: app.btn_released(self, app.goto_main)  # function to be called when button is pressed
 
     BoxLayout:

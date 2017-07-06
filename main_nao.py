@@ -22,7 +22,8 @@ def start_working(subject_id, nao_ip):
         return
 
     def worker3():
-        os.system('python curious_game/nao_ros.py ' + nao_ip)
+        os.system('python ~/pycharm/twisted_server_ros_2_0/scripts/nao_ros_listener.py ' + nao_ip)
+        # os.system('python ~/pycharm/curious_game/nao_ros.py ' + nao_ip)
         return
 
     def worker4():
@@ -53,12 +54,17 @@ def start_working(subject_id, nao_ip):
     t5 = threading.Thread(target=worker5)
     t5.start()
     threading._sleep(0.2)
-    t6 = threading.Thread(target=worker6)
-    t6.start()
-    threading._sleep(0.2)
-    t7 = threading.Thread(target=worker7)
-    t7.start()
-    threading._sleep(0.2)
+
+    # === don't need to run experiment
+    # t6 = threading.Thread(target=worker6)
+    # t6.start()
+    # threading._sleep(0.2)
+
+    # t7 = threading.Thread(target=worker7)
+    # t7.start()
+    # threading._sleep(0.2)
+
+
     t8 = threading.Thread(target=worker8)
     t8.start()
     threading._sleep(0.2)
