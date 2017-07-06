@@ -1,3 +1,5 @@
+
+
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -14,9 +16,9 @@ import time
 
 #import text fonts
 
-LabelBase.register(name = "dogs", fn_regular = "dogs.ttf" )
-LabelBase.register(name = "welcome", fn_regular = "welcome.ttf" )
-LabelBase.register(name = "regular", fn_regular = "regular.ttf" )
+# LabelBase.register(name = "dogs", fn_regular = "dogs.ttf" )
+# LabelBase.register(name = "welcome", fn_regular = "welcome.ttf" )
+# LabelBase.register(name = "regular", fn_regular = "regular.ttf" )
 
 # declaration of forms
 # connection to .kv file
@@ -26,7 +28,7 @@ class Config(BoxLayout):
 
 
 # the app definition
-class TabletApp(App):
+class ExperimentApp(App):
     def build(self):
         # connect internal instances of form classes
         self.config = Config()
@@ -44,4 +46,4 @@ class TabletApp(App):
 
 
 if __name__ == '__main__':
-    TabletApp().run()
+    ExperimentApp().run()
