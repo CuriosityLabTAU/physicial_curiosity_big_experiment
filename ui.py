@@ -146,6 +146,7 @@ class ExperimentApp(App):
         rospy.Subscriber("tracking", String, self.update_tracking)
         self.flow = rospy.Publisher ('the_flow', String, queue_size=10)
         self.nao = rospy.Publisher('to_nao', String, queue_size=10)
+        self.log = rospy.Publisher("experiment_log", String, queue_size=10)
         rospy.Subscriber("nao_state", String, self.parse_nao_state)
 
         # threading._sleep(0.5)
@@ -177,11 +178,13 @@ class ExperimentApp(App):
 
         # learning round
         print('-- learning round: ', behavior_before, time, matrix, behavior_after)
+        self.log.publish("state %d, learning_round" % self.state)
         self.round(behavior_before=behavior_before, time=time, matrix=matrix, behavior_after=behavior_after)
 
         if tasks:
-            for task in tasks:
+            for i, task in enumerate(tasks):
                 print('-- task round: ', behavior_before, time, matrix, behavior_after)
+                self.log.publish("state %d, task: %d, %s" % (self.state, i, task['behavior_before']))
                 self.round(behavior_before=task['behavior_before'], time=task['time'], matrix=matrix, behavior_after=task['behavior_after'])
 
 
@@ -231,6 +234,7 @@ class ExperimentApp(App):
     def epoch_thread(self):
         print('=== next ===')
         self.state = int(self.experiment_screen.ids['state_text_input'].text)
+        self.log.publish("current_state: %d" % self.state)
         current_tasks = sample(tasks, 1)
         self.epoch(behavior_before=exp_flow[self.state]['behavior_before'],
                    time=exp_flow[self.state]['time'],
