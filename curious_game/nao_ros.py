@@ -8,8 +8,9 @@ import datetime
 
 
 class NaoNode():
-    def __init__(self):
-        self.robotIP = '192.168.0.104'
+
+    def __init__(self, robot_ip='192.168.0.104'):
+        self.robotIP = robot_ip
         self.port = 9559
 
         try:
@@ -31,7 +32,7 @@ class NaoNode():
         # self.motionProxy.rest()
 
         self.communicating = False
-        self.nao_movements = rospy.Publisher ('nao_movements', String)
+        self.nao_movements = rospy.Publisher ('nao_movements', String, queue_size=10)
         self.robot_running = True
 
         self.counter=0
@@ -75,5 +76,10 @@ class NaoNode():
 
             self.counter+=1
 
-nao = NaoNode()
+# ===== start the program =======
+if len(sys.argv) > 1:
+    nao = NaoNode(sys.argv[1])
+else:
+    nao = NaoNode()
+
 nao.start()

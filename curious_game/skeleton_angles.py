@@ -6,7 +6,7 @@ import numpy as np
 
 class SkeletonAngles():
     def __init__(self):
-        self.pub = rospy.Publisher ('skeleton_angles', String)
+        self.pub = rospy.Publisher ('skeleton_angles', String, queue_size=10)
         self.names = ['head', 'neck', 'torso', 'left_shoulder', 'left_elbow', 'left_hand',
                       'right_shoulder', 'right_elbow', 'right_hand',
                       'left_hip', 'left_knee', 'left_foot', 'right_hip', 'right_knee', 'right_foot']

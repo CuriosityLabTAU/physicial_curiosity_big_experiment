@@ -17,11 +17,11 @@ import numpy as np
 
 class image_converter:
 
-    def __init__(self):
-        self.robotIP = '192.168.0.104'
+    def __init__(self, robot_ip='192.168.0.104'):
+        self.robotIP = robot_ip
         self.port = 9559
 
-        self.image_pub = rospy.Publisher("/cam0//usb_cam/image_raw", msg.Image)
+        self.image_pub = rospy.Publisher("/cam0/usb_cam/image_raw", msg.Image, queue_size=10)
 
         self.bridge = CvBridge()
         self.camProxy = ALProxy("ALVideoDevice", self.robotIP, self.port)
@@ -55,6 +55,9 @@ class image_converter:
         # rospy.spin()
         self.camProxy.unsubscribe(self.videoClient)
 
-
-ic = image_converter()
+# ===== start the program =======
+if len(sys.argv) > 1:
+    ic = image_converter(sys.argv[1])
+else:
+    ic = image_converter()
 ic.start()

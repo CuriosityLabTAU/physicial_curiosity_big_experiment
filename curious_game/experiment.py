@@ -8,7 +8,7 @@ import sys
 class Experiment(Tkinter.Tk):
 
     def __init__(self, parent, subject_id):
-        self.flow = rospy.Publisher ('the_flow', String)
+        self.flow = rospy.Publisher ('the_flow', String, queue_size=10)
         self.matrix_names = ['basic', 'mirror', 'LShoulderPitch-RShoulderRoll', 'LShoulderRoll-RShoulderPitch']
 
         self.exp_running = False

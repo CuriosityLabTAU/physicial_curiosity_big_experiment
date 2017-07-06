@@ -9,6 +9,8 @@ from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.core.text import LabelBase
 import time
+import os
+import threading
 
 import subprocess
 
@@ -32,6 +34,9 @@ class Experiment_screen(BoxLayout):
 
 # the app definition
 class ExperimentApp(App):
+    subject_id = 0
+    nao_ip = '192.168.0.104'
+
     def build(self):
         # connect internal instances of form classes
         self.config = Config()
@@ -53,14 +58,18 @@ class ExperimentApp(App):
 
         return self.sm
 
-
     def goto_experiment_screen(self,subject_id,nao_ip):#go to experiment screen
         print subject_id
         print nao_ip
-        # subprocess.call(['python /main_nao.py '+subject_id+" "+nao_ip])
+        self.subject_id = subject_id
+        self.nao_ip = nao_ip
+        t1 = threading.Thread(target=self.run_main)
+        t1.start()
+        # subprocess.call(['python main_nao.py '+subject_id+" "+nao_ip])
         self.sm.current="experiment_screen"
 
-
+    def run_main(self):
+        os.system('python main_nao.py ' + self.subject_id + ' ' + self.nao_ip)
 
 
 

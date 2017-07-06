@@ -5,15 +5,13 @@ import time
 import sys
 
 
-def intro(subject_id):
-    start_working(subject_id)
+def intro(subject_id=0, nao_ip='192.168.0.104'):
+    start_working(subject_id, nao_ip)
 
     time.sleep(60)
 
 
-def start_working(subject_id):
-
-    subject_id = subject_id
+def start_working(subject_id, nao_ip):
 
     def worker1():
         os.system('roslaunch skeleton_markers markers.launch')
@@ -24,20 +22,20 @@ def start_working(subject_id):
         return
 
     def worker3():
-        os.system('python curious_game/nao_ros.py')
+        os.system('python curious_game/nao_ros.py ' + nao_ip)
         return
 
     def worker4():
-        os.system('rosbag record -a -o data/physical_curiosity_open_day_' + subject_id + '.bag')
+        os.system('rosbag record -a -o data/physical_curiosity_big_experiment_' + str(subject_id) + '.bag')
 
     def worker5():
         os.system('python curious_game/skeleton_angles.py')
 
     def worker6():
-        os.system('python curious_game/experiment.py '+subject_id)
+        os.system('python curious_game/experiment.py '+ str(subject_id))
 
     def worker7():
-        os.system('python curious_game/nao_camera_ros.py')
+        os.system('python curious_game/nao_camera_ros.py ' + nao_ip)
 
     def worker8():
         os.system('roslaunch multi_camera_affdex multi_camera_affdex.launch')
@@ -67,4 +65,9 @@ def start_working(subject_id):
     t4 = threading.Thread(target=worker4)
     t4.start()
 
-intro(int(sys.argv[1]))
+if len(sys.argv) > 1:
+    print('sys.argv', sys.argv)
+    intro(int(sys.argv[1]), sys.argv[2])
+else:
+    intro()
+

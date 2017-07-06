@@ -31,8 +31,8 @@ class AngleMatrix:
         self.skeleton_angles = np.zeros([8])
         self.robot_angles = np.zeros([8])
 
-        self.pub = rospy.Publisher ('nao_commands', String)
-        self.log = rospy.Publisher ('experiment_log', String)
+        self.pub = rospy.Publisher ('nao_commands', String, queue_size=10)
+        self.log = rospy.Publisher ('experiment_log', String, queue_size=10)
 
         self.exp_running = False
 
