@@ -26,6 +26,11 @@ def start_working(subject_id, nao_ip):
         # os.system('python ~/pycharm/curious_game/nao_ros.py ' + nao_ip)
         return
 
+    def worker3_5():
+        os.system('python ~/pycharm/twisted_server_ros_2_0/scripts/nao_ros_talker.py ' + nao_ip)
+        # os.system('python ~/pycharm/curious_game/nao_ros.py ' + nao_ip)
+        return
+
     def worker4():
         os.system('rosbag record -a -o data/physical_curiosity_big_experiment_' + str(subject_id) + '.bag')
 
@@ -41,6 +46,8 @@ def start_working(subject_id, nao_ip):
     def worker8():
         os.system('roslaunch multi_camera_affdex multi_camera_affdex.launch')
 
+    def worker9():
+        os.system('rosrun topic_tools throttle messages to_nao 5.0')
 
     t1 = threading.Thread(target=worker1)
     t1.start()
@@ -70,6 +77,10 @@ def start_working(subject_id, nao_ip):
     threading._sleep(0.2)
     t4 = threading.Thread(target=worker4)
     t4.start()
+    threading._sleep(0.2)
+    # t9 = threading.Thread(target=worker9)
+    # t9.start()
+    # threading._sleep(0.2)
 
 if len(sys.argv) > 1:
     print('sys.argv', sys.argv)

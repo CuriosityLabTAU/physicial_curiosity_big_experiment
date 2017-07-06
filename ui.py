@@ -16,17 +16,24 @@ from std_msgs.msg import String
 import threading
 import json
 from random import shuffle, sample
+import sys
+
 
 the_matrices = range(0, 7)
 exp_flow = [
     {
-        'behavior_before': None,
-        'time': 60,
-        'behavior_after': 'introduction'
+        'behavior_before': 'dialog_move_head/animations/LookLeft',
+        'time': 20.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft'
+    },
+    {
+        'behavior_before': 'dialog_move_head/animations/LookLeft',
+        'time': 6.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft'
     },
     {
         'behavior_before': 'explain_experiment',
-        'time': 60,
+        'time': 6.0,
         'behavior_after': None
     },
     {
@@ -58,71 +65,20 @@ exp_flow = [
 
 tasks = [
     {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
+        'behavior_before': 'dialog_move_head/animations/LookRight',
+        'time': 10.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft'
     },
     {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
+        'behavior_before': 'dialog_move_head/animations/LookRight',
+        'time': 10.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft'
     },
     {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
-    },
-    {
-        'behavior_before': 'explain_task',
-        'time': 30,
-        'behavior_after': 'good_job'
+        'behavior_before': 'dialog_move_head/animations/LookRight',
+        'time': 10.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft'
     }
-
 ]
 
 #import text fonts
@@ -141,6 +97,8 @@ class Config(BoxLayout):
 
 class Experiment_screen(BoxLayout):
     kinect_status_id = ObjectProperty()
+    state_text_input = ObjectProperty()
+    next_button = ObjectProperty()
 
 
 # the app definition
@@ -190,10 +148,11 @@ class ExperimentApp(App):
         self.nao = rospy.Publisher('to_nao', String, queue_size=10)
         rospy.Subscriber("nao_state", String, self.parse_nao_state)
 
-        threading._sleep(0.2)
-        self.nao.publish('{\"action\": \"wake_up\"}')
-
-        # subprocess.call(['python main_nao.py '+subject_id+" "+nao_ip])
+        # threading._sleep(0.5)
+        # self.nao.publish('{\"action\": \"wake_up\"}')
+        threading._sleep(2.0)
+        self.nao.publish('{\"action\": \"run_behavior\", \"parameters\": [\"dialog_posture/bhv_stand_up\"]}')
+        threading._sleep(0.5)
 
         # set the current_subject matrices
         self.matrices = the_matrices
@@ -234,16 +193,14 @@ class ExperimentApp(App):
             self.nao.publish(robot_str)
             self.proceed = False
 
-        while(not self.proceed):
+        while not self.proceed:
             pass
 
         if time >= 0:      # run epoch with matrix
-            self.start()
+            self.exp_start()
             self.flow.publish(str(matrix))
-            Clock.schedule_once(self.stop, time)
-
-        while(not self.proceed):
-            pass
+            threading._sleep(time)
+            self.exp_stop()
 
         if behavior_before:
             # publish directly to nao_ros
@@ -251,26 +208,30 @@ class ExperimentApp(App):
             self.nao.publish(robot_str)
             self.proceed = False
 
-        while(not self.proceed):
+        while not self.proceed:
             pass
 
-
-
-    def start(self):
+    def exp_start(self):
         self.flow.publish('start')
         self.proceed = False
 
-    def stop(self, dt):
+    def exp_stop(self):
+        print('---stop---')
         self.flow.publish('stop')
         self.proceed = True
 
     def the_end(self):
-        self.stop()
+        self.exp_stop()
         self.flow.publish('the end')
 
     def next_epoch(self):
+        self.experiment_screen.ids['next_button'].disabled = True
+        threading.Thread(target=self.epoch_thread).start()
+
+    def epoch_thread(self):
         print('=== next ===')
-        current_tasks = sample(tasks, 3)
+        self.state = int(self.experiment_screen.ids['state_text_input'].text)
+        current_tasks = sample(tasks, 1)
         self.epoch(behavior_before=exp_flow[self.state]['behavior_before'],
                    time=exp_flow[self.state]['time'],
                    matrix=self.matrices[self.state],
@@ -278,6 +239,8 @@ class ExperimentApp(App):
                    tasks=current_tasks
                    )
         self.state += 1
+        self.experiment_screen.ids['state_text_input'].text = str(self.state)
+        self.experiment_screen.ids['next_button'].disabled = False
 
     def btn_released(self,btn,func,param1=None,param2=None):#button configuration
         btn.background_coler=(1,1,1,1)
@@ -291,8 +254,9 @@ class ExperimentApp(App):
         else:
             func()
 
+    def exit_experiment(self):
+        self.nao.publish('{\"action\" : \"rest\"}')
+
 
 if __name__ == '__main__':
     ExperimentApp().run()
-    # node = UI_Node()
-    # node.run_experiment()

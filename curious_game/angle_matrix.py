@@ -22,6 +22,8 @@ class AngleMatrix:
 
         self.exp_running = False
 
+        self.msg_counter = 0
+
     def set_base_matrices(self):
         self.base_matrices = {}
         self.base_matrices['basic'] = np.eye(8)
@@ -107,9 +109,11 @@ class AngleMatrix:
         robot_str += '0.4'
         robot_str += '\\\"\"}'
 
-        print('*************** angle_matrix ************ published: ', robot_str)
+        # print('*************** angle_matrix ************ published: ', robot_str)
 
-        self.pub.publish(robot_str)
+        self.msg_counter += 1
+        if self.msg_counter % 10 == 0:
+            self.pub.publish(robot_str)
 
     def switch_angles(self, angle_name_0, angle_name_1):
         matrix = np.eye(8)
