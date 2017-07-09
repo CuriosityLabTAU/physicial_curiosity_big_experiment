@@ -11,7 +11,7 @@ import time
 import argparse
 
 port = 9559
-robotIP = '192.168.0.100'
+robotIP = '192.168.0.104'
 anim=ALProxy("ALAnimatedSpeech",robotIP,port)
 cong={"bodyLnguageMde":"contextual"}
 
@@ -19,7 +19,7 @@ cong={"bodyLnguageMde":"contextual"}
 anim.say("Hello, I'm a robot that moves my hands following the gestures you make, but today I was confused and I have trouble recognizing your movements. Can you try to help me control my body", cong)
 
 
-anim.say("You have 30 seconds to perform this task", cong)
+anim.say("You have 30 seconds \\ pau=1000 \\ to perform this task", cong)
 
 anim.say("Oh, I'm so unfocused, I got confused again. You're very good at it, maybe we'll do it again? Take a minute to understand how I got confused this time and then I will ask you to do more tasks", cong)
 

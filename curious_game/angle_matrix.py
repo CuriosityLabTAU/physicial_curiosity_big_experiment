@@ -64,7 +64,7 @@ class AngleMatrix:
         elif 'start' in data.data:
             self.exp_running = True
         elif 'the end' not in data.data: # got a real matrix
-            self.matrix = self.base_matrices[data.data]
+            self.matrix = self.base_matrices[int(data.data)]
             self.log.publish("matrix: " + str(self.matrix))
 
     def callback(self, data):

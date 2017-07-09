@@ -18,8 +18,9 @@ import json
 from random import shuffle, sample
 import sys
 
+num_of_matrix=7
+the_matrices = range(0, num_of_matrix)
 
-the_matrices = range(0, 7)
 exp_flow = [
     {
         'behavior_before': None,
@@ -34,44 +35,14 @@ exp_flow = [
         'tasks':True
     },
     {
-        'behavior_before': 'physical_curiosity/confused2',
-        'time': 60.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft',
-        'tasks':True
-    },
-    {
-        'behavior_before': 'physical_curiosity/confused1',
-        'time': 60.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft',
-        'tasks':True
-    },
-    {
-        'behavior_before': 'physical_curiosity/confused2',
-        'time': 60.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft',
-        'tasks':True
-    },
-    {
-        'behavior_before': 'physical_curiosity/confused1',
-        'time': 60.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft',
-        'tasks':True
-    },
-    {
-        'behavior_before': 'physical_curiosity/confused2',
-        'time': 60.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft',
-        'tasks':True
-    },
-    {
         'behavior_before': 'physical_curiosity/end_task',
-        'time': 0,
+        'time': 120.0,
         'behavior_after': None,
         'tasks': False
     },
     {
         'behavior_before': 'physical_curiosity/the_end',
-        'time': 0,
+        'time': -1,
         'behavior_after': None,
         'tasks':False
     }
@@ -99,17 +70,7 @@ tasks = [
         'behavior_after': None
     },
     {
-        'behavior_before': 'dialog_move_head/animations/LookRight',
-        'time': 30.0,
-        'behavior_after': None
-    },
-    {
-        'behavior_before': 'dialog_move_head/animations/LookRight',
-        'time': 30.0,
-        'behavior_after': None
-    },
-    {
-        'behavior_before': 'dialog_move_head/animations/LookRight',
+        'behavior_before': 'physical_curiosity/tasks/two_hands_down',
         'time': 30.0,
         'behavior_after': None
     }
@@ -208,7 +169,7 @@ class ExperimentApp(App):
         print('-- learning round: ', behavior_before, time, matrix, behavior_after)
         self.log.publish("state %d, learning_round" % self.state)
         self.round(behavior_before=behavior_before, time=time, matrix=matrix, behavior_after=behavior_after)
-
+        print "------tasks---------"
         if tasks:
             for i, task in enumerate(tasks):
                 print('-- task round: ', behavior_before, time, matrix, behavior_after)
@@ -233,7 +194,7 @@ class ExperimentApp(App):
             threading._sleep(time)
             self.exp_stop()
 
-        if behavior_before:
+        if behavior_after:
             # publish directly to nao_ros
             robot_str = '{\"name\": \"behavior_after\", \"action\" : \"run_behavior\", \"parameters\" : [\"' + behavior_after + '\", \"wait\"]}'
             self.nao.publish(robot_str)
@@ -267,9 +228,12 @@ class ExperimentApp(App):
             current_tasks = sample(tasks, 3)
         else:
             current_tasks = None
+
+        matric_to_use=min(self.matrices[self.state],num_of_matrix-1)
+
         self.epoch(behavior_before=exp_flow[self.state]['behavior_before'],
                    time=exp_flow[self.state]['time'],
-                   matrix=self.matrices[self.state],
+                   matrix=matric_to_use,
                    behavior_after=exp_flow[self.state]['behavior_after'],
                    tasks=current_tasks
                    )
