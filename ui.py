@@ -22,70 +22,98 @@ import sys
 the_matrices = range(0, 7)
 exp_flow = [
     {
-        'behavior_before': 'dialog_move_head/animations/LookLeft',
-        'time': 20.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft'
+        'behavior_before': None,
+        'time': 60.0,
+        'behavior_after': 'physical_curiosity/opening',
+        'tasks':True
     },
     {
-        'behavior_before': 'dialog_move_head/animations/LookLeft',
-        'time': 6.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft'
+        'behavior_before': 'physical_curiosity/confused1',
+        'time': 60.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft',
+        'tasks':True
     },
     {
-        'behavior_before': 'explain_experiment',
-        'time': 6.0,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/confused2',
+        'time': 60.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft',
+        'tasks':True
     },
     {
-        'behavior_before': 'confused_again_1',
-        'time': 60,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/confused1',
+        'time': 60.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft',
+        'tasks':True
     },
     {
-        'behavior_before': 'confused_again_2',
-        'time': 60,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/confused2',
+        'time': 60.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft',
+        'tasks':True
     },
     {
-        'behavior_before': 'confused_again_3',
-        'time': 60,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/confused1',
+        'time': 60.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft',
+        'tasks':True
     },
     {
-        'behavior_before': 'confused_again_4',
-        'time': 60,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/confused2',
+        'time': 60.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft',
+        'tasks':True
     },
     {
-        'behavior_before': 'confused_again_5',
-        'time': 60,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/end_task',
+        'time': 0,
+        'behavior_after': None,
+        'tasks': False
+    },
+    {
+        'behavior_before': 'physical_curiosity/the_end',
+        'time': 0,
+        'behavior_after': None,
+        'tasks':False
     }
 ]
 
 tasks = [
     {
-        'behavior_before': 'dialog_move_head/animations/LookRight',
-        'time': 10.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft'
+        'behavior_before': 'physical_curiosity/tasks/two_hands_up',
+        'time': 30.0,
+        'behavior_after': None
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/two_hands_to_the_side',
+        'time': 30.0,
+        'behavior_after': None
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/two_hands_forward',
+        'time': 30.0,
+        'behavior_after': None
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/two_hands_down',
+        'time': 30.0,
+        'behavior_after': None
     },
     {
         'behavior_before': 'dialog_move_head/animations/LookRight',
-        'time': 10.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft'
+        'time': 30.0,
+        'behavior_after': None
     },
     {
         'behavior_before': 'dialog_move_head/animations/LookRight',
-        'time': 10.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft'
+        'time': 30.0,
+        'behavior_after': None
+    },
+    {
+        'behavior_before': 'dialog_move_head/animations/LookRight',
+        'time': 30.0,
+        'behavior_after': None
     }
 ]
-
-#import text fonts
-
-# LabelBase.register(name = "dogs", fn_regular = "dogs.ttf" )
-# LabelBase.register(name = "welcome", fn_regular = "welcome.ttf" )
-# LabelBase.register(name = "regular", fn_regular = "regular.ttf" )
 
 # declaration of forms
 # connection to .kv file
@@ -235,13 +263,17 @@ class ExperimentApp(App):
         print('=== next ===')
         self.state = int(self.experiment_screen.ids['state_text_input'].text)
         self.log.publish("current_state: %d" % self.state)
-        current_tasks = sample(tasks, 1)
+        if exp_flow[self.state]['tasks']:
+            current_tasks = sample(tasks, 3)
+        else:
+            current_tasks = None
         self.epoch(behavior_before=exp_flow[self.state]['behavior_before'],
                    time=exp_flow[self.state]['time'],
                    matrix=self.matrices[self.state],
                    behavior_after=exp_flow[self.state]['behavior_after'],
                    tasks=current_tasks
                    )
+
         self.state += 1
         self.experiment_screen.ids['state_text_input'].text = str(self.state)
         self.experiment_screen.ids['next_button'].disabled = False
