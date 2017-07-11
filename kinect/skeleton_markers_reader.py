@@ -13,7 +13,6 @@ def callback(data):
     #rospy.init_node('kinect_poses_publisher')
     # rospy.loginfo(message)
     # pub.publish(message)
-    print(message)
 
 def kinect_listener():
     #init a listener to kinect and

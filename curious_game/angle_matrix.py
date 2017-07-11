@@ -13,7 +13,7 @@ class AngleMatrix:
         self.set_base_matrices()
         
         self.matrix = random.choice(self.base_matrices['basic'] )
-        print(self.matrix, type(self.matrix))
+
         self.skeleton_angles = np.zeros([8])
         self.robot_angles = np.zeros([8])
 
@@ -40,21 +40,21 @@ class AngleMatrix:
 
         self.base_matrices[0] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
 
-        self.base_matrices[1] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[1] = self.switch_angles([[0,0,1,0],[0,1,0,0],[1,0,0,0],[0,0,0,1]])
 
-        self.base_matrices[2] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[2] = self.switch_angles([[0,0,-1,0],[0,1,0,0],[-1,0,0,0],[0,0,0,1]])
 
-        self.base_matrices[3] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[3] = self.switch_angles([[0,0,0,1],[0,1,0,0],[1,0,0,0],[0,0,0,1]])
 
-        self.base_matrices[4] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[4] = self.switch_angles([[1,0,0,0],[0,0,1,0],[0,0,1,0],[0,0,0,1]])
 
-        self.base_matrices[5] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[5] = self.switch_angles([[0,1,0,0],[1,0,0,0],[0,0,1,0],[0,0,0,1]])
 
-        self.base_matrices[6] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[6] = self.switch_angles([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]])
 
-        self.base_matrices[7] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[7] = self.switch_angles([[0,1,0,0],[0,0,1,0],[0,0,0,1],[1,0,0,0]])
 
-        self.base_matrices[8] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[8] = self.switch_angles([[0.5,0,-0.5,0],[0,1,0,0],[-0.5,0,0.5,0],[0,0,0,1]])
 
 
         # self.base_matrices[1] = self.switch_angles('LShoulderRoll', 'RShoulderPitch')
@@ -76,7 +76,6 @@ class AngleMatrix:
         rospy.spin()
 
     def flow_handling(self, data):
-        print('angle_matrix', data.data)
         if 'stop' in data.data:
             self.exp_running = False
         elif 'start' in data.data:
@@ -132,7 +131,6 @@ class AngleMatrix:
         robot_str += '0.4'
         robot_str += '\\\"\"}'
 
-        # print('*************** angle_matrix ************ published: ', robot_str)
 
         self.msg_counter += 1
         if self.msg_counter % 10 == 0:

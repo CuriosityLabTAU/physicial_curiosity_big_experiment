@@ -18,34 +18,34 @@ import json
 from random import shuffle, sample
 import sys
 
-num_of_matrix=7
+num_of_matrix=1
 the_matrices = range(0, num_of_matrix)
 
 exp_flow = [
     {
         'behavior_before': None,
-        'time': 60.0,
-        'behavior_after': 'physical_curiosity/opening',
-        'tasks':True
-    },
-    {
-        'behavior_before': 'physical_curiosity/confused1',
-        'time': 60.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft',
-        'tasks':True
-    },
-    {
-        'behavior_before': 'physical_curiosity/end_task',
-        'time': 120.0,
-        'behavior_after': None,
-        'tasks': False
-    },
-    {
-        'behavior_before': 'physical_curiosity/the_end',
-        'time': -1,
+        'time': 6.0,
         'behavior_after': None,
         'tasks':False
     }
+    # {
+    #     'behavior_before': 'physical_curiosity/confused1',
+    #     'time': 60.0,
+    #     'behavior_after': 'dialog_move_head/animations/LookLeft',
+    #     'tasks':True
+    # },
+    # {
+    #     'behavior_before': 'physical_curiosity/end_task',
+    #     'time': 120.0,
+    #     'behavior_after': None,
+    #     'tasks': False
+    # },
+    # {
+    #     'behavior_before': 'physical_curiosity/the_end',
+    #     'time': -1,
+    #     'behavior_after': None,
+    #     'tasks':False
+    # }
 ]
 
 tasks = [
@@ -138,11 +138,10 @@ class ExperimentApp(App):
         self.log = rospy.Publisher("experiment_log", String, queue_size=10)
         rospy.Subscriber("nao_state", String, self.parse_nao_state)
 
-        # threading._sleep(0.5)
-        # self.nao.publish('{\"action\": \"wake_up\"}')
-        threading._sleep(2.0)
+
+        threading._sleep(3.0)
         self.nao.publish('{\"action\": \"run_behavior\", \"parameters\": [\"dialog_posture/bhv_stand_up\"]}')
-        threading._sleep(0.5)
+        threading._sleep(1.0)
 
         # set the current_subject matrices
         self.matrices = the_matrices
@@ -256,7 +255,6 @@ class ExperimentApp(App):
 
     def exit_experiment(self):
         self.nao.publish('{\"action\" : \"rest\"}')
-
 
 if __name__ == '__main__':
     ExperimentApp().run()
