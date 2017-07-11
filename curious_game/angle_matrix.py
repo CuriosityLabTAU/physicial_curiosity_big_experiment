@@ -38,17 +38,35 @@ class AngleMatrix:
         self.base_matrices['mirror'][1,5] = -1
         self.base_matrices['mirror'][5,1] = -1
 
-        self.base_matrices[0] = self.switch_angles('LShoulderPitch', 'RShoulderRoll')
-        self.base_matrices[1] = self.switch_angles('LShoulderRoll', 'RShoulderPitch')
+        self.base_matrices[0] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
 
-        self.base_matrices[2] = self.switch_angles('LShoulderPitch', 'LShoulderRoll')
-        self.base_matrices[3] = self.switch_angles('RShoulderPitch', 'RShoulderRoll')
+        self.base_matrices[1] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
 
-        self.base_matrices[4] = self.switch_angles('LShoulderPitch', 'RShoulderRoll')
-        self.base_matrices[5] = self.switch_angles('LShoulderRoll', 'RShoulderPitch')
+        self.base_matrices[2] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
 
-        self.base_matrices[6] = self.switch_angles('LShoulderPitch', 'LShoulderRoll')
-        self.base_matrices[7] = self.switch_angles('RShoulderPitch', 'RShoulderRoll')
+        self.base_matrices[3] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+
+        self.base_matrices[4] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+
+        self.base_matrices[5] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+
+        self.base_matrices[6] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+
+        self.base_matrices[7] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+
+        self.base_matrices[8] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+
+
+        # self.base_matrices[1] = self.switch_angles('LShoulderRoll', 'RShoulderPitch')
+        #
+        # self.base_matrices[2] = self.switch_angles('LShoulderPitch', 'LShoulderRoll')
+        # self.base_matrices[3] = self.switch_angles('RShoulderPitch', 'RShoulderRoll')
+        #
+        # self.base_matrices[4] = self.switch_angles('LShoulderPitch', 'RShoulderRoll')
+        # self.base_matrices[5] = self.switch_angles('LShoulderRoll', 'RShoulderPitch')
+        #
+        # self.base_matrices[6] = self.switch_angles('LShoulderPitch', 'LShoulderRoll')
+        # self.base_matrices[7] = self.switch_angles('RShoulderPitch', 'RShoulderRoll')
 
     def start(self):
         #init a listener to kinect angles
@@ -120,15 +138,14 @@ class AngleMatrix:
         if self.msg_counter % 10 == 0:
             self.pub.publish(robot_str)
 
-    def switch_angles(self, angle_name_0, angle_name_1):
+    def switch_angles(self,mat=[[],[],[],[]]):
         matrix = np.eye(8)
-        angle_0 = self.pNames.index(angle_name_0)
-        angle_1 = self.pNames.index(angle_name_1)
-        matrix[angle_0, angle_0] = 0
-        matrix[angle_1, angle_1] = 0
-        matrix[angle_0, angle_1] = 1
-        matrix[angle_1, angle_0] = 1
+        mat=mat
+        for row in range(4):
+            for index in range(4):
+                matrix[(row/2)*2 + row,(index/2)*2 + index]= mat[row][index]
         return matrix
+
 
 angle_matrix = AngleMatrix()
 angle_matrix.start()
