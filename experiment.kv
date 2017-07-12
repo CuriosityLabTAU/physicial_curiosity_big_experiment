@@ -62,6 +62,7 @@
     kinect_status_id: kinect_status_id
     state_text_input: state_text_input
     next_button: next_button
+    timer:timer
     orientation:'vertical'
     BoxLayout:
         size_hint_y:0.3
@@ -132,17 +133,17 @@
     BoxLayout:
         size_hint_y:0.1
 
-        Button:
-            text:"pause/resume"
+        Label:
+            text:"Timer"
             color:0,0,0,1
             font_size:30
             bold: True
-            on_press: self.background_color = (1,0,0,1)
-            on_release: app.btn_released(self, app.goto_main)  # function to be called when button is pressed
+
 
         Label:
             padding_x: self.width/3
             padding_y: ( self.height - self.line_height ) / 2
-            text:"Timer"
+            id:timer
+            text:"00:00"
             font_size:20
             color:0,0,0,1

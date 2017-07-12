@@ -17,6 +17,8 @@ import threading
 import json
 from random import shuffle, sample
 import sys
+import datetime
+
 
 num_of_matrix=1
 the_matrices = range(0, num_of_matrix)
@@ -24,15 +26,15 @@ the_matrices = range(0, num_of_matrix)
 exp_flow = [
     {
         'behavior_before': None,
-        'time': 6.0,
+        'time': 60.0,
         'behavior_after': None,
         'tasks':False
     },
     {
-        'behavior_before': 'physical_curiosity/confused1',
-        'time': 60.0,
+        'behavior_before': 'physical_curiosity/hello',
+        'time': 20.0,
         'behavior_after': 'dialog_move_head/animations/LookLeft',
-        'tasks':True,
+        'tasks':False,
         'use_matrix':False
     }
     # {
@@ -89,12 +91,13 @@ class Experiment_screen(BoxLayout):
     kinect_status_id = ObjectProperty()
     state_text_input = ObjectProperty()
     next_button = ObjectProperty()
+    timer=ObjectProperty()
 
 
 # the app definition
 class ExperimentApp(App):
     subject_id = 0
-    nao_ip = '192.168.0.104'
+    nao_ip = '192.168.0.103'
     state = 0
     proceed = False
 
@@ -153,6 +156,9 @@ class ExperimentApp(App):
             if "use_matrix" in exp_flow[stage_no]:
                 if exp_flow[stage_no]["use_matrix"]==False:
                     self.matrix_for_state[stage_no]=None
+            elif "use_matrix" in exp_flow[stage_no]:
+                if type(exp_flow[stage_no]["use_matrix"]) is int:
+                    self.matrix_for_state[stage_no]=exp_flow[stage_no]["use_matrix"]
             else:
                 if current_index < len(self.matrices):
                     self.matrix_for_state[stage_no] =self.matrices[current_index]
@@ -200,11 +206,29 @@ class ExperimentApp(App):
         while not self.proceed:
             pass
 
-        if time >= 0:      # run epoch with matrix
+        if time >= 0 and matrix is not None:      # run epoch with matrix
+            self.delta = datetime.datetime.now()+datetime.timedelta(0, time)
+            Clock.schedule_interval(self.update_timer, 0.05)
+
+
             self.exp_start()
             self.flow.publish(str(matrix))
             threading._sleep(time)
+
+            Clock.unschedule(self.update_timer)
+            self.experiment_screen.ids['timer'].text = str("00:00")
+
             self.exp_stop()
+
+        if time >= 0 and matrix is None:
+            self.delta = datetime.datetime.now()+datetime.timedelta(0, time)
+            Clock.schedule_interval(self.update_timer, 0.05)
+
+            self.experiment_screen.ids['timer'].text = str(time)
+            threading._sleep(time)
+
+            Clock.unschedule(self.update_timer)
+            self.experiment_screen.ids['timer'].text = str("00:00")
 
         if behavior_after:
             # publish directly to nao_ros
@@ -269,6 +293,12 @@ class ExperimentApp(App):
 
     def exit_experiment(self):
         self.nao.publish('{\"action\" : \"rest\"}')
+
+    def update_timer(self, kt):
+        delta = self.delta - datetime.datetime.now()
+        minutes, seconds = str(delta).split(":")[1:]
+        seconds = seconds[:5]
+        self.experiment_screen.ids['timer'].text = str(minutes+':'+seconds)
 
 if __name__ == '__main__':
     ExperimentApp().run()

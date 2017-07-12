@@ -58,9 +58,9 @@ def start_working(subject_id, nao_ip):
     t4.start()
     threading._sleep(0.2)
 
-    t5 = threading.Thread(target=worker5)
-    t5.start()
-    threading._sleep(0.2)
+    # t5 = threading.Thread(target=worker5)
+    # t5.start()
+    # threading._sleep(0.2)
 
     t6 = threading.Thread(target=worker6)
     t6.start()
