@@ -16,7 +16,7 @@ anim=ALProxy("ALAnimatedSpeech",robotIP,port)
 cong={"bodyLnguageMde":"contextual"}
 
 
-anim.say("Hello, I'm a robot that moves my hands following the gestures you make, but today I was confused and I have trouble recognizing your movements. Can you try to help me control my body", cong)
+anim.say("Hi hello! I'm a robot that moving my hands following the movements of your hands.I usually know how to imitate those in front of me, but today I got confused and I do not recognize your hands very well. Can you help me control my body? I'll give you now three tasks, and for each of them you'll have 15 seconds, will you be successful?", cong)
 
 
 anim.say("You have 30 seconds \\ pau=1000 \\ to perform this task", cong)
