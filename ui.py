@@ -27,13 +27,14 @@ exp_flow = [
         'time': 6.0,
         'behavior_after': None,
         'tasks':False
+    },
+    {
+        'behavior_before': 'physical_curiosity/confused1',
+        'time': 60.0,
+        'behavior_after': 'dialog_move_head/animations/LookLeft',
+        'tasks':True,
+        'use_matrix':False
     }
-    # {
-    #     'behavior_before': 'physical_curiosity/confused1',
-    #     'time': 60.0,
-    #     'behavior_after': 'dialog_move_head/animations/LookLeft',
-    #     'tasks':True
-    # },
     # {
     #     'behavior_before': 'physical_curiosity/end_task',
     #     'time': 120.0,
@@ -146,6 +147,18 @@ class ExperimentApp(App):
         # set the current_subject matrices
         self.matrices = the_matrices
         shuffle(self.matrices)
+        self.matrix_for_state = {}
+        current_index=0
+        for stage_no in range(len(exp_flow)):
+            if "use_matrix" in exp_flow[stage_no]:
+                if exp_flow[stage_no]["use_matrix"]==False:
+                    self.matrix_for_state[stage_no]=None
+            else:
+                if current_index < len(self.matrices):
+                    self.matrix_for_state[stage_no] =self.matrices[current_index]
+                    current_index+=1
+                else:
+                    self.matrix_for_state[stage_no] = current_index
 
         self.sm.current="experiment_screen"
 
@@ -221,6 +234,7 @@ class ExperimentApp(App):
 
     def epoch_thread(self):
         print('=== next ===')
+
         self.state = int(self.experiment_screen.ids['state_text_input'].text)
         self.log.publish("current_state: %d" % self.state)
         if exp_flow[self.state]['tasks']:
@@ -228,11 +242,9 @@ class ExperimentApp(App):
         else:
             current_tasks = None
 
-        matric_to_use=min(self.matrices[self.state],num_of_matrix-1)
-
         self.epoch(behavior_before=exp_flow[self.state]['behavior_before'],
                    time=exp_flow[self.state]['time'],
-                   matrix=matric_to_use,
+                   matrix=self.matrix_for_state[self.state],
                    behavior_after=exp_flow[self.state]['behavior_after'],
                    tasks=current_tasks
                    )
@@ -240,6 +252,8 @@ class ExperimentApp(App):
         self.state += 1
         self.experiment_screen.ids['state_text_input'].text = str(self.state)
         self.experiment_screen.ids['next_button'].disabled = False
+
+
 
     def btn_released(self,btn,func,param1=None,param2=None):#button configuration
         btn.background_coler=(1,1,1,1)
