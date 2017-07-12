@@ -2,7 +2,7 @@ import rospy
 from std_msgs.msg import String
 import numpy as np
 import random
-
+import copy
 
 class AngleMatrix:
 
@@ -38,7 +38,9 @@ class AngleMatrix:
         self.base_matrices['mirror'][1,5] = -1
         self.base_matrices['mirror'][5,1] = -1
 
-        self.base_matrices[0] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[0] = self.switch_angles([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
+
+        # self.base_matrices[0] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
 
         self.base_matrices[1] = self.switch_angles([[0,0,1,0],[0,1,0,0],[1,0,0,0],[0,0,0,1]])
 
@@ -94,6 +96,12 @@ class AngleMatrix:
 
     def calculate_robot_angles(self):
         self.robot_angles = np.dot(self.matrix, self.skeleton_angles)
+        #mirror
+        robot_angles_org=copy.deepcopy(self.robot_angles)
+        self.robot_angles[0]=robot_angles_org[4]
+        self.robot_angles[1]=-robot_angles_org[5]
+        self.robot_angles[4]=robot_angles_org[0]
+        self.robot_angles[5]=-robot_angles_org[1]
         # safety!
         self.robot_angles[0] = np.maximum(self.robot_angles[0],-2.0850)
         self.robot_angles[0] = np.minimum(self.robot_angles[0], 2.0850)
@@ -133,7 +141,7 @@ class AngleMatrix:
 
 
         self.msg_counter += 1
-        if self.msg_counter % 10 == 0:
+        if self.msg_counter % 14 == 0:
             self.pub.publish(robot_str)
 
     def switch_angles(self,mat=[[],[],[],[]]):
