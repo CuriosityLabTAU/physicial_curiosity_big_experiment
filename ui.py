@@ -24,31 +24,36 @@ num_of_matrix=1
 the_matrices = range(0, num_of_matrix)
 
 exp_flow = [
+    #step 0
     {
         'behavior_before': None,
         'time': 60.0,
         'behavior_after': None,
         'tasks':False
     },
+    #step 1
     {
-        'behavior_before': 'physical_curiosity/hello',
-        'time': 20.0,
-        'behavior_after': 'dialog_move_head/animations/LookLeft',
-        'tasks':False,
-        'use_matrix':False
+        'behavior_before': 'physical_curiosity/m/opening',
+        'time': 15.0,
+        'behavior_after': None,
+        'tasks':True,
+        'use_matrix':0
+    },
+    #step 2
+    {
+        'behavior_before': 'physical_curiosity/m/confused1',
+        'time': 15.0,
+        'behavior_after': None,
+        'tasks': True,
+    },
+    #step 3
+    {
+        'behavior_before': 'physical_curiosity/m/break1',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': False,
+        'use_matrix': False
     }
-    # {
-    #     'behavior_before': 'physical_curiosity/end_task',
-    #     'time': 120.0,
-    #     'behavior_after': None,
-    #     'tasks': False
-    # },
-    # {
-    #     'behavior_before': 'physical_curiosity/the_end',
-    #     'time': -1,
-    #     'behavior_after': None,
-    #     'tasks':False
-    # }
 ]
 
 tasks = [
