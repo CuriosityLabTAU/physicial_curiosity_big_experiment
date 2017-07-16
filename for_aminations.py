@@ -30,6 +30,6 @@ anim.say("You are so good at understanding how I move, do you want a challenge? 
 
 anim.say("I had a lot of fun with you today, you were really good. I'd love you to come visit me again", cong)
 
-anim.say("Can you make me be with both hands sideways", cong)
+anim.say("Come on, start", cong)
 
 
