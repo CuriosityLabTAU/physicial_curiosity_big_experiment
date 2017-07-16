@@ -20,21 +20,21 @@ import sys
 import datetime
 
 
-num_of_matrix=1
+num_of_matrix=8
 the_matrices = range(0, num_of_matrix)
 
 exp_flow = [
     #step 0
     {
         'behavior_before': None,
-        'time': 60.0,
-        'behavior_after': None,
+        'time': 5.0,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks':False
     },
     #step 1
     {
         'behavior_before': 'physical_curiosity/m/opening',
-        'time': 15.0,
+        'time': -1,
         'behavior_after': None,
         'tasks':True,
         'use_matrix':0
@@ -42,9 +42,9 @@ exp_flow = [
     #step 2
     {
         'behavior_before': 'physical_curiosity/m/confused1',
-        'time': 15.0,
+        'time': -1,
         'behavior_after': None,
-        'tasks': True,
+        'tasks': True
     },
     #step 3
     {
@@ -53,35 +53,102 @@ exp_flow = [
         'behavior_after': None,
         'tasks': False,
         'use_matrix': False
-    }
+    },
+    #step 4
+    {
+        'behavior_before': 'physical_curiosity/m/confused2',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': True
+    },
+    #step 5
+    {
+        'behavior_before': 'physical_curiosity/m/confused3',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': True
+    },
+    #step 6
+    {
+        'behavior_before': 'physical_curiosity/m/break2.1',
+        'time': 120.0,
+        'behavior_after': 'physical_curiosity/m/break2.2',
+        'tasks': False,
+        'use_matrix': False
+
+    },
+    #step 7
+    {
+        'behavior_before': 'physical_curiosity/m/confused2',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': True
+    },
+    #step 8
+    {
+        'behavior_before': 'physical_curiosity/m/confused3',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': True
+    },
+    #step 9
+    {
+        'behavior_before': 'physical_curiosity/m/break3',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': False
+    },
+    #step 10
+    {
+        'behavior_before': 'physical_curiosity/m/confused2',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': True
+    },
+    #step 11
+    {
+        'behavior_before': 'physical_curiosity/m/confused3',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': True
+    },
+    #step 12
+    {
+        'behavior_before': 'physical_curiosity/m/end_task',
+        'time': 120.0,
+        'behavior_after': None,
+        'tasks': False
+    },
+    #step 13
+    {
+        'behavior_before': 'physical_curiosity/m/end_part_a',
+        'time': -1,
+        'behavior_after': None,
+        'tasks': False
+    },
 ]
 
 tasks = [
     {
-        'behavior_before': 'physical_curiosity/tasks/two_hands_up',
-        'time': 30.0,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/tasks/m/two_hands_up',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/well_done'
     },
     {
-        'behavior_before': 'physical_curiosity/tasks/two_hands_to_the_side',
-        'time': 30.0,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/tasks/m/two_hands_down',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/nice'
     },
     {
-        'behavior_before': 'physical_curiosity/tasks/two_hands_forward',
-        'time': 30.0,
-        'behavior_after': None
-    },
-    {
-        'behavior_before': 'physical_curiosity/tasks/two_hands_down',
-        'time': 30.0,
-        'behavior_after': None
-    },
-    {
-        'behavior_before': 'physical_curiosity/tasks/two_hands_down',
-        'time': 30.0,
-        'behavior_after': None
+        'behavior_before': 'physical_curiosity/tasks/m/two_hands_forward',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/wow'
     }
+    # {
+    #     'behavior_before': 'physical_curiosity/tasks/two_hands_down',
+    #     'time': 15.0,
+    #     'behavior_after': 'physical_curiosity/stand_init'
+    # }
 ]
 
 # declaration of forms

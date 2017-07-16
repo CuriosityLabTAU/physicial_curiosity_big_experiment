@@ -38,9 +38,9 @@ class AngleMatrix:
         self.base_matrices['mirror'][1,5] = -1
         self.base_matrices['mirror'][5,1] = -1
 
-        self.base_matrices[0] = self.switch_angles([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
+        # self.base_matrices[0] = self.switch_angles([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
 
-        # self.base_matrices[0] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
+        self.base_matrices[0] = self.switch_angles([[-1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,1]])
 
         self.base_matrices[1] = self.switch_angles([[0,0,1,0],[0,1,0,0],[1,0,0,0],[0,0,0,1]])
 
