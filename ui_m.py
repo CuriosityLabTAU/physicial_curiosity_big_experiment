@@ -42,7 +42,7 @@ exp_flow = [
     #step 2
     {
         'behavior_before': 'physical_curiosity/m/confused1',
-        'time': -1,
+        'time': 60.0,
         'behavior_after': None,
         'tasks': True
     },
@@ -57,14 +57,14 @@ exp_flow = [
     #step 4
     {
         'behavior_before': 'physical_curiosity/m/confused2',
-        'time': -1,
+        'time': 60.0,
         'behavior_after': None,
         'tasks': True
     },
     #step 5
     {
         'behavior_before': 'physical_curiosity/m/confused3',
-        'time': -1,
+        'time': 60.0,
         'behavior_after': None,
         'tasks': True
     },
@@ -80,14 +80,14 @@ exp_flow = [
     #step 7
     {
         'behavior_before': 'physical_curiosity/m/confused2',
-        'time': -1,
+        'time': 60.0,
         'behavior_after': None,
         'tasks': True
     },
     #step 8
     {
         'behavior_before': 'physical_curiosity/m/confused3',
-        'time': -1,
+        'time': 60.0,
         'behavior_after': None,
         'tasks': True
     },
@@ -101,14 +101,14 @@ exp_flow = [
     #step 10
     {
         'behavior_before': 'physical_curiosity/m/confused2',
-        'time': -1,
+        'time': 60.0,
         'behavior_after': None,
         'tasks': True
     },
     #step 11
     {
         'behavior_before': 'physical_curiosity/m/confused3',
-        'time': -1,
+        'time': 60.0,
         'behavior_after': None,
         'tasks': True
     },
@@ -135,20 +135,80 @@ tasks = [
         'behavior_after': 'physical_curiosity/tasks/well_done'
     },
     {
-        'behavior_before': 'physical_curiosity/tasks/m/two_hands_down',
+        'behavior_before': 'physical_curiosity/tasks/m/two_hands_forward',
         'time': 15.0,
         'behavior_after': 'physical_curiosity/tasks/nice'
     },
     {
-        'behavior_before': 'physical_curiosity/tasks/m/two_hands_forward',
+        'behavior_before': 'physical_curiosity/tasks/m/two_hands_down',
         'time': 15.0,
         'behavior_after': 'physical_curiosity/tasks/wow'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/two_hands_to_the_side',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/stand_init'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_up_left_hand_down',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/stand_init'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_up_left_hand_forward',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/stand_init'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_up_left_hand_to_the_side',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/well_done'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/right_hand_forward_left_hand_down',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/nice'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_forward_left_hand_side',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/wow'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_to_the_side_left_hand_down',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/stand_init'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_to_the_side_left_hand_forward',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/stand_init'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/right_hand_down_left_hand_to_the_side',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/stand_init'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_down_left_hand_forward',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/well_done'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/left_hand_up_right_hand_down',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/nice'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/m/left_hand_up_right_hand_forward',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/tasks/wow'
+    },
+    {
+        'behavior_before': 'physical_curiosity/tasks/left_hand_up_right_hand_to_the_side',
+        'time': 15.0,
+        'behavior_after': 'physical_curiosity/stand_init'
     }
-    # {
-    #     'behavior_before': 'physical_curiosity/tasks/two_hands_down',
-    #     'time': 15.0,
-    #     'behavior_after': 'physical_curiosity/stand_init'
-    # }
 ]
 
 # declaration of forms
