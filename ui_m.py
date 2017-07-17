@@ -145,7 +145,7 @@ tasks = [
         'behavior_after': 'physical_curiosity/tasks/wow'
     },
     {
-        'behavior_before': 'physical_curiosity/tasks/two_hands_to_the_side',
+        'behavior_before': 'physical_curiosity/tasks/m/two_hands_to_the_side',
         'time': 15.0,
         'behavior_after': 'physical_curiosity/stand_init'
     },
@@ -165,7 +165,7 @@ tasks = [
         'behavior_after': 'physical_curiosity/tasks/well_done'
     },
     {
-        'behavior_before': 'physical_curiosity/tasks/right_hand_forward_left_hand_down',
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_forward_left_hand_down',
         'time': 15.0,
         'behavior_after': 'physical_curiosity/nice'
     },
@@ -185,7 +185,7 @@ tasks = [
         'behavior_after': 'physical_curiosity/tasks/stand_init'
     },
     {
-        'behavior_before': 'physical_curiosity/tasks/right_hand_down_left_hand_to_the_side',
+        'behavior_before': 'physical_curiosity/tasks/m/right_hand_down_left_hand_to_the_side',
         'time': 15.0,
         'behavior_after': 'physical_curiosity/stand_init'
     },
@@ -205,7 +205,7 @@ tasks = [
         'behavior_after': 'physical_curiosity/tasks/wow'
     },
     {
-        'behavior_before': 'physical_curiosity/tasks/left_hand_up_right_hand_to_the_side',
+        'behavior_before': 'physical_curiosity/tasks/m/left_hand_up_right_hand_to_the_side',
         'time': 15.0,
         'behavior_after': 'physical_curiosity/stand_init'
     }

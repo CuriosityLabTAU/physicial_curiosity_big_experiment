@@ -6,7 +6,7 @@
 from naoqi import ALProxy
 
 port = 9559
-robotIP = '192.168.0.100'
+robotIP = '192.168.0.102'
 anim=ALProxy("ALAnimatedSpeech",robotIP,port)
 cong={"bodyLnguageMde":"contextual"}
 tts = ALProxy("ALTextToSpeech", robotIP, 9559)
@@ -17,7 +17,7 @@ tts.setParameter("speed", 80)
 anim.say("Hi hello! I'm a robot that moving my hands following the movements of your hands.I usually know how to imitate those in front of me, but today I got confused and I do not recognize your hands very well. Can you help me control my body? I'll give you now three tasks, and for each of them you'll have 15 seconds, will you be successful?", cong)
 
 
-anim.say("Bring both my hands down", cong)
+anim.say("This is it? Are you already going? Let's do a little dance before you go", cong)
 
 anim.say("Oh, I'm so unfocused, I got confused again. You're very good at it, maybe we'll do it again? Take a minute to understand how I got confused this time and then I will ask you to do more tasks", cong)
 
