@@ -27,7 +27,7 @@ exp_flow = [
     #step 0
     {
         'behavior_before': None,
-        'time': 5.0,
+        'time': 60.0,
         'behavior_after': 'physical_curiosity/stand_init',
         'tasks':False
     },
