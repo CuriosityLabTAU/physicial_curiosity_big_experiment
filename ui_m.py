@@ -27,7 +27,7 @@ exp_flow = [
     #step 0
     {
         'behavior_before': None,
-        'time': 120.0,
+        'time': 5.0,
         'behavior_after': 'physical_curiosity/stand_init',
         'tasks':False
     },
@@ -96,7 +96,8 @@ exp_flow = [
         'behavior_before': 'physical_curiosity/m/break3',
         'time': -1,
         'behavior_after': None,
-        'tasks': False
+        'tasks': False,
+        'use_matrix': False
     },
     #step 10
     {
@@ -124,7 +125,8 @@ exp_flow = [
         'behavior_before': 'physical_curiosity/m/end_part_a',
         'time': -1,
         'behavior_after': None,
-        'tasks': False
+        'tasks': False,
+        'use_matrix': False
     },
 ]
 
@@ -285,16 +287,18 @@ class ExperimentApp(App):
         self.matrix_for_state = {}
         current_index=0
         for stage_no in range(len(exp_flow)):
-            if "use_matrix" in exp_flow[stage_no] and exp_flow[stage_no]["use_matrix"]==False:
+            if "use_matrix" in exp_flow[stage_no] and exp_flow[stage_no]["use_matrix"]is False:
+                print stage_no
                 self.matrix_for_state[stage_no]=None
             elif "use_matrix" in exp_flow[stage_no] and type(exp_flow[stage_no]["use_matrix"]) is int:
-                self.matrix_for_state[stage_no]=exp_flow[stage_no]["use_matrix"]
+                self.matrix_for_state[stage_no]=self.matrices[exp_flow[stage_no]["use_matrix"]]
             else:
                 if current_index < len(self.matrices):
                     self.matrix_for_state[stage_no] =self.matrices[current_index]
                     current_index+=1
                 else:
                     self.matrix_for_state[stage_no] = current_index
+        print self.matrix_for_state
 
         self.sm.current="experiment_screen"
 
