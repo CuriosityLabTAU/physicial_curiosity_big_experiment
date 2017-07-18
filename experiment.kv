@@ -120,6 +120,23 @@
                 bold: True
 
     BoxLayout:
+        size_hint_y:0.1
+        Button:
+            id: rest_button
+            text:"rest"
+            color:0,0,0,1
+            font_size:30
+            bold: True
+            on_press: app.rest()
+        Button:
+            id: stand_up_button
+            text:"stand up"
+            color:0,0,0,1
+            font_size:30
+            bold: True
+            on_press: app.stand_up()
+
+    BoxLayout:
         size_hint_y:0.3
         Button:
             id: next_button
@@ -147,3 +164,4 @@
             text:"00:00"
             font_size:20
             color:0,0,0,1
+

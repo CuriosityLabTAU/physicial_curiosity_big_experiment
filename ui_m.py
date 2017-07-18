@@ -388,6 +388,7 @@ class ExperimentApp(App):
 
     def next_epoch(self):
         self.experiment_screen.ids['next_button'].disabled = True
+        if
         threading.Thread(target=self.epoch_thread).start()
 
     def epoch_thread(self):
@@ -433,6 +434,14 @@ class ExperimentApp(App):
         minutes, seconds = str(delta).split(":")[1:]
         seconds = seconds[:5]
         self.experiment_screen.ids['timer'].text = str(minutes+':'+seconds)
+
+    def rest(self):
+        self.nao.publish('{\"action\": \"rest\"}')
+
+    def stand_up(self):
+        self.nao.publish('{\"action\": \"wake_up\"}')
+        threading._sleep(0.1)
+        self.nao.publish('{\"action\": \"run_behavior\", \"parameters\": [\"dialog_posture/bhv_stand_up\"]}')
 
 if __name__ == '__main__':
     ExperimentApp().run()
