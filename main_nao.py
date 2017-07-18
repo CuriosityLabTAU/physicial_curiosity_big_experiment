@@ -40,11 +40,9 @@ def start_working(subject_id, nao_ip):
     def worker7():
         os.system('python curious_game/skeleton_angles.py')
 
-
-
     t1 = threading.Thread(target=worker1)
     t1.start()
-    threading._sleep(0.5)
+    threading._sleep(2.5)
 
     t2 = threading.Thread(target=worker2)
     t2.start()

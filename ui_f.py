@@ -226,6 +226,8 @@ class Experiment_screen(BoxLayout):
     state_text_input = ObjectProperty()
     next_button = ObjectProperty()
     timer=ObjectProperty()
+    stop_button = ObjectProperty()
+
 
 
 # the app definition
@@ -261,6 +263,7 @@ class ExperimentApp(App):
         self.experiment_screen.ids['kinect_status_id'].text = data.data
 
     def goto_experiment_screen(self,subject_id,nao_ip):#go to experiment screen
+        self.experiment_screen.ids['stop_button'].disabled = True
         print subject_id
         print nao_ip
         self.subject_id = subject_id
@@ -391,26 +394,28 @@ class ExperimentApp(App):
         threading.Thread(target=self.epoch_thread).start()
 
     def epoch_thread(self):
-        print('=== next ===')
-
         self.state = int(self.experiment_screen.ids['state_text_input'].text)
         self.log.publish("current_state: %d" % self.state)
-        if exp_flow[self.state]['tasks']:
-            current_tasks = sample(tasks, 3)
+
+        if self.state ==len(exp_flow)-2:
+           self.run_end_task()
+
         else:
-            current_tasks = None
+            if exp_flow[self.state]['tasks']:
+                current_tasks = sample(tasks, 3)
+            else:
+                current_tasks = None
 
-        self.epoch(behavior_before=exp_flow[self.state]['behavior_before'],
-                   time=exp_flow[self.state]['time'],
-                   matrix=self.matrix_for_state[self.state],
-                   behavior_after=exp_flow[self.state]['behavior_after'],
-                   tasks=current_tasks
-                   )
+            self.epoch(behavior_before=exp_flow[self.state]['behavior_before'],
+                       time=exp_flow[self.state]['time'],
+                       matrix=self.matrix_for_state[self.state],
+                       behavior_after=exp_flow[self.state]['behavior_after'],
+                       tasks=current_tasks
+                       )
 
-        self.state += 1
-        self.experiment_screen.ids['state_text_input'].text = str(self.state)
-        self.experiment_screen.ids['next_button'].disabled = False
-
+            self.state += 1
+            self.experiment_screen.ids['state_text_input'].text = str(self.state)
+            self.experiment_screen.ids['next_button'].disabled = False
 
 
     def btn_released(self,btn,func,param1=None,param2=None):#button configuration
@@ -433,6 +438,50 @@ class ExperimentApp(App):
         minutes, seconds = str(delta).split(":")[1:]
         seconds = seconds[:5]
         self.experiment_screen.ids['timer'].text = str(minutes+':'+seconds)
+
+    def rest(self):
+        self.nao.publish('{\"action\": \"rest\"}')
+
+    def stand_up(self):
+        self.nao.publish('{\"action\": \"wake_up\"}')
+        threading._sleep(0.1)
+        self.nao.publish('{\"action\": \"run_behavior\", \"parameters\": [\"dialog_posture/bhv_stand_up\"]}')
+
+    def run_end_task(self):
+        self.proceed = True
+
+        # publish directly to nao_ros
+        behavior_before = exp_flow[self.state]['behavior_before']
+        robot_str = '{\"name\": \"behavior_before\", \"action\" : \"run_behavior\", \"parameters\" : [\"' + behavior_before + '\", \"wait\"]}'
+        self.nao.publish(robot_str)
+
+        self.proceed = False
+
+        while not self.proceed:
+            pass
+        time=exp_flow[self.state]['time']
+
+        self.delta = datetime.datetime.now()+datetime.timedelta(0, time)
+        Clock.schedule_interval(self.update_timer, 0.05)
+
+        Clock.schedule_once(self.end_end_task, time)
+        self.experiment_screen.ids['stop_button'].disabled = False
+
+        self.exp_start()
+        self.flow.publish(str(self.matrix_for_state[self.state]))
+
+
+    def end_end_task(self, tk=None):
+        self.experiment_screen.ids['stop_button'].disabled = True
+        Clock.unschedule(self.end_end_task)
+        Clock.unschedule(self.update_timer)
+        self.experiment_screen.ids['timer'].text = str("00:00")
+
+        self.exp_stop()
+
+        self.state += 1
+        self.experiment_screen.ids['state_text_input'].text = str(self.state)
+        self.experiment_screen.ids['next_button'].disabled = False
 
 if __name__ == '__main__':
     ExperimentApp().run()

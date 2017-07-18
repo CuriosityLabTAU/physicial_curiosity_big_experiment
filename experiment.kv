@@ -63,6 +63,7 @@
     state_text_input: state_text_input
     next_button: next_button
     timer:timer
+    stop_button:stop_button
     orientation:'vertical'
     BoxLayout:
         size_hint_y:0.3
@@ -96,6 +97,14 @@
             text: "0"
             font_size:20
             color:0,0,0,1
+
+        Button:
+            id: stop_button
+            text:"Stop"
+            color:0,0,0,1
+            font_size:30
+            bold: True
+            on_press: app.end_end_task()
 
     BoxLayout:
         orientation: 'horizontal'
@@ -164,4 +173,5 @@
             text:"00:00"
             font_size:20
             color:0,0,0,1
+
 
