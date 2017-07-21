@@ -35,7 +35,7 @@ exp_flow = [
     {
         'behavior_before': 'physical_curiosity/m/opening',
         'time': -1,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks':True,
         'use_matrix':0
     },
@@ -43,7 +43,7 @@ exp_flow = [
     {
         'behavior_before': 'physical_curiosity/m/confused1',
         'time': 60.0,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks': True
     },
     #step 3
@@ -58,14 +58,14 @@ exp_flow = [
     {
         'behavior_before': 'physical_curiosity/m/confused2',
         'time': 60.0,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks': True
     },
     #step 5
     {
         'behavior_before': 'physical_curiosity/m/confused3',
         'time': 60.0,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks': True
     },
     #step 6
@@ -81,14 +81,14 @@ exp_flow = [
     {
         'behavior_before': 'physical_curiosity/m/confused2',
         'time': 60.0,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks': True
     },
     #step 8
     {
         'behavior_before': 'physical_curiosity/m/confused3',
         'time': 60.0,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks': True
     },
     #step 9
@@ -103,21 +103,21 @@ exp_flow = [
     {
         'behavior_before': 'physical_curiosity/m/confused2',
         'time': 60.0,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks': True
     },
     #step 11
     {
         'behavior_before': 'physical_curiosity/m/confused3',
         'time': 60.0,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks': True
     },
     #step 12
     {
         'behavior_before': 'physical_curiosity/m/end_task',
         'time': 120.0,
-        'behavior_after': None,
+        'behavior_after': 'physical_curiosity/stand_init',
         'tasks': False
     },
     #step 13
@@ -154,12 +154,12 @@ tasks = [
     {
         'behavior_before': 'physical_curiosity/tasks/m/right_hand_up_left_hand_down',
         'time': 15.0,
-        'behavior_after': 'physical_curiosity/tasks/stand_init'
+        'behavior_after': 'physical_curiosity/stand_init'
     },
     {
         'behavior_before': 'physical_curiosity/tasks/m/right_hand_up_left_hand_forward',
         'time': 15.0,
-        'behavior_after': 'physical_curiosity/tasks/stand_init'
+        'behavior_after': 'physical_curiosity/stand_init'
     },
     {
         'behavior_before': 'physical_curiosity/tasks/m/right_hand_up_left_hand_to_the_side',
@@ -179,12 +179,12 @@ tasks = [
     {
         'behavior_before': 'physical_curiosity/tasks/m/right_hand_to_the_side_left_hand_down',
         'time': 15.0,
-        'behavior_after': 'physical_curiosity/tasks/stand_init'
+        'behavior_after': 'physical_curiosity/stand_init'
     },
     {
         'behavior_before': 'physical_curiosity/tasks/m/right_hand_to_the_side_left_hand_forward',
         'time': 15.0,
-        'behavior_after': 'physical_curiosity/tasks/stand_init'
+        'behavior_after': 'physical_curiosity/stand_init'
     },
     {
         'behavior_before': 'physical_curiosity/tasks/m/right_hand_down_left_hand_to_the_side',
